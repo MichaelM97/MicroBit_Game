@@ -4,11 +4,11 @@
 #define YOTTA_BUILD_YEAR 2018 // UTC year
 #define YOTTA_BUILD_MONTH 2 // UTC month 1-12
 #define YOTTA_BUILD_DAY 5 // UTC day 1-31
-#define YOTTA_BUILD_HOUR 17 // UTC hour 0-24
-#define YOTTA_BUILD_MINUTE 42 // UTC minute 0-59
-#define YOTTA_BUILD_SECOND 56 // UTC second 0-61
-#define YOTTA_BUILD_UUID 21744f07-fed8-48f5-8bf6-bface2a1c859 // unique random UUID for each build
-#define YOTTA_BUILD_VCS_ID 977da814d84393e2dd6b1c6c611c7a9e13e85eb2 // git or mercurial hash
-#define YOTTA_BUILD_VCS_CLEAN 1 // evaluates true if the version control system was clean, otherwise false
-#define YOTTA_BUILD_VCS_DESCRIPTION 977da81 // git describe or mercurial equivalent
+#define YOTTA_BUILD_HOUR 19 // UTC hour 0-24
+#define YOTTA_BUILD_MINUTE 13 // UTC minute 0-59
+#define YOTTA_BUILD_SECOND 39 // UTC second 0-61
+#define YOTTA_BUILD_UUID 88c67e62-ac6f-4b3f-b98f-b0e4b66cd09b // unique random UUID for each build
+#define YOTTA_BUILD_VCS_ID 58751dd4957a1ecbce3b59d90dc11e1249bf8c58 // git or mercurial hash
+#define YOTTA_BUILD_VCS_CLEAN 0 // evaluates true if the version control system was clean, otherwise false
+#define YOTTA_BUILD_VCS_DESCRIPTION 58751dd // git describe or mercurial equivalent
 #endif // ndef __YOTTA_BUILD_INFO_H__
