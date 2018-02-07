@@ -9,41 +9,29 @@
 #include "MicroBit.h"
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
+#include <string>
 
 MicroBit uBit;
 
 #define INPUT_SEQUENCE_LENGTH 15
+//YOU CAN SET A PRINT DELAY (FOR DIFFICULTIES)
 
 //Generates random input sequence for each instance of the game
 int * get_input_sequence() {
     //Initialise variables
     int randNum;
-    int returnArray [INPUT_SEQUENCE_LENGTH] = {};
+    static int returnArray[INPUT_SEQUENCE_LENGTH];
 
     //Use the time as a random seed
     srand (time(NULL)); 
 
     //Fills input sequence array with 1's and 2's randomly
     for (int i = 0; i < INPUT_SEQUENCE_LENGTH; i++) {
-      randNum = rand() % 2 + 1;
+      randNum = rand() % 2 + 1; //Generate 1 or 2 randomly
       returnArray[i] = randNum;
     }
-
     return returnArray;
-}
-
-//Displays the inputs the user must repeat 
-void display_input_sequence(int *sequence, int currentPos) {
-    //Loops through the input sequence up to the current position
-    for (int i = 0; i <= currentPos; i++) {
-
-	//Points at the buttons the user must press
-        if (sequence[i] == MICROBIT_ID_BUTTON_A) {
-	    uBit.display.print("<");
-	} else {
-	    uBit.display.print(">");
-	}
-    }
 }
 
 int main()
@@ -54,13 +42,27 @@ int main()
     //Retrieve int array containing input sequence
     int *inputSequence = get_input_sequence();
 
-    // 
+    //Declare variables
     bool gameInProcess = true;
-    int counter = 0;
+    bool validInput = false;
+    int counter = 1;
+    char printString[INPUT_SEQUENCE_LENGTH];
 
     while (gameInProcess == true) {
+	//Displays input order to the user
+	strcpy(printString, ""); 
+	for (int i = 0; i < counter; i++) {
+		if (inputSequence[i] == MICROBIT_ID_BUTTON_A) {
+		    strcat(printString,"< ");
+		} else {
+		    strcat(printString,"> ");
+		}
+	    }
+	    uBit.display.print(printString);
 
-        display_input_sequence(inputSequence, counter);
+
+
+	counter++;
 
     }
 
