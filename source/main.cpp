@@ -14,8 +14,8 @@
 
 MicroBit uBit;
 
+//GAME INPUT LENGTH
 #define INPUT_SEQUENCE_LENGTH 15
-//YOU CAN SET A PRINT DELAY (FOR DIFFICULTIES)
 
 //Generates random input sequence for each instance of the game
 int * get_input_sequence() {
@@ -34,16 +34,14 @@ int * get_input_sequence() {
     return returnArray;
 }
 
-int get_button_press() {
-    while (true) {
-	//Detect input and add to string
-	if (uBit.buttonA.isPressed()){
-	    return MICROBIT_ID_BUTTON_A;
-	}
-	if (uBit.buttonB.isPressed()){	    
-	    return MICROBIT_ID_BUTTON_B;
-	}
-    }
+int buttonPushed; //Global variable used to set which button has been pressed
+
+void on_button_A(MicroBitEvent APush) {
+	buttonPushed = 1;
+}
+
+void on_button_B(MicroBitEvent BPush) {
+	buttonPushed = 2;
 }
 
 int main()
@@ -55,10 +53,10 @@ int main()
     int *inputSequence = get_input_sequence();
 
     //Declare variables
-    bool gameInProcess = true;
-    int gameCounter = 1;
-    int userInput[INPUT_SEQUENCE_LENGTH];
-    char requiredString[INPUT_SEQUENCE_LENGTH];
+    bool gameInProcess = true; //Used to track game status
+    int gameCounter = 1; //Used to track game round
+    int userInput[INPUT_SEQUENCE_LENGTH]; //Used to store user input
+    char requiredString[INPUT_SEQUENCE_LENGTH]; //Used to display the required input
 
     while (gameInProcess == true || gameCounter == INPUT_SEQUENCE_LENGTH) {
 	//Displays input order to the user
@@ -75,7 +73,20 @@ int main()
 	//Gets input from user
 	memset(userInput, 0, sizeof(userInput));
 	for (int x = 0; x < gameCounter; x++) {
-	    userInput[x] = get_button_press();
+	    buttonPushed = 0;
+	    while (buttonPushed == 0) {
+		//Listen for button presses and alter global variable
+		uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, on_button_A);
+		uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, on_button_B);
+		uBit.display.print(gameCounter);
+		uBit.sleep(1000);
+		    if (buttonPushed == MICROBIT_ID_BUTTON_A){
+		    	userInput[x] = MICROBIT_ID_BUTTON_A;
+		    }
+		    if (buttonPushed == MICROBIT_ID_BUTTON_B){	  
+		   	userInput[x] = MICROBIT_ID_BUTTON_B;
+		    }
+	    }
 	}
 
 	//Detect if input is valid
