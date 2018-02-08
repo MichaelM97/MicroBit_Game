@@ -15,7 +15,7 @@
 MicroBit uBit;
 
 //GAME INPUT LENGTH
-#define INPUT_SEQUENCE_LENGTH 15
+#define INPUT_SEQUENCE_LENGTH 10
 
 //Generates random input sequence for each instance of the game
 int * get_input_sequence() {
@@ -78,7 +78,6 @@ int main()
 		//Listen for button presses and alter global variable
 		uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, on_button_A);
 		uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, on_button_B);
-		uBit.display.print(gameCounter);
 		uBit.sleep(1000);
 		    if (buttonPushed == MICROBIT_ID_BUTTON_A){
 		    	userInput[x] = MICROBIT_ID_BUTTON_A;
