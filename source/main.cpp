@@ -34,6 +34,18 @@ int * get_input_sequence() {
     return returnArray;
 }
 
+int get_button_press() {
+    while (true) {
+	//Detect input and add to string
+	if (uBit.buttonA.isPressed()){
+	    return MICROBIT_ID_BUTTON_A;
+	}
+	if (uBit.buttonB.isPressed()){	    
+	    return MICROBIT_ID_BUTTON_B;
+	}
+    }
+}
+
 int main()
 {
     //Initialise the micro:bit runtime.
@@ -44,29 +56,44 @@ int main()
 
     //Declare variables
     bool gameInProcess = true;
-    bool validInput = false;
-    int counter = 1;
-    char printString[INPUT_SEQUENCE_LENGTH];
+    int gameCounter = 1;
+    int userInput[INPUT_SEQUENCE_LENGTH];
+    char requiredString[INPUT_SEQUENCE_LENGTH];
 
-    while (gameInProcess == true) {
+    while (gameInProcess == true || gameCounter == INPUT_SEQUENCE_LENGTH) {
 	//Displays input order to the user
-	strcpy(printString, ""); 
-	for (int i = 0; i < counter; i++) {
-		if (inputSequence[i] == MICROBIT_ID_BUTTON_A) {
-		    strcat(printString,"< ");
-		} else {
-		    strcat(printString,"> ");
-		}
+	strcpy(requiredString, ""); 
+	for (int i = 0; i < gameCounter; i++) {
+	    if (inputSequence[i] == MICROBIT_ID_BUTTON_A) {
+		strcat(requiredString,"< ");
+	    } else {
+		strcat(requiredString,"> ");
 	    }
-	    uBit.display.print(printString);
+	}
+	uBit.display.print(requiredString);
 
+	//Gets input from user
+	memset(userInput, 0, sizeof(userInput));
+	for (int x = 0; x < gameCounter; x++) {
+	    userInput[x] = get_button_press();
+	}
 
-
-	counter++;
-
+	//Detect if input is valid
+	for (int y = 0; y < gameCounter; y++){
+	    if (userInput[y] != inputSequence[y]) {
+		gameInProcess = false;
+		break;
+	    }
+	}
+	gameCounter++;
     }
 
-    uBit.display.scroll("test");
+    //Display if user won or lost game
+    if (gameInProcess == true) {
+	uBit.display.scroll("Winner!");
+    } else {
+	uBit.display.scroll("Game over");
+    }    
 
     // If main exits, there may still be other fibers running or
     // registered event handlers etc.
